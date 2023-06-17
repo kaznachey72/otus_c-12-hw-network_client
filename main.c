@@ -43,7 +43,6 @@ int create_connect()
             continue;
         }
         if (connect(fd, it_addr->ai_addr, it_addr->ai_addrlen) != -1) {
-            fprintf(stderr, "connect error\n");
             break;
         }
         close(fd);
