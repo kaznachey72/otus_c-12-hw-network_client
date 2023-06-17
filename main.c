@@ -1,4 +1,5 @@
 #include <netdb.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -72,6 +73,7 @@ int receive_data(int fd, char **msg)
     char *recv_data = NULL;
     char buff[4096] = { 0 };
     
+    bool is_correct = false;
     size_t len = 0;
     ssize_t r = 0;
     while ((r = recv(fd, &buff, sizeof(buff), 0)) > 0) {
@@ -91,6 +93,7 @@ int receive_data(int fd, char **msg)
 
         //print_hex(&recv_data[len-2]);
         if (strncmp(&recv_data[len-2], "\n.", 2) == 0) {
+            is_correct = true;
             break;
         }
     }
@@ -100,7 +103,7 @@ int receive_data(int fd, char **msg)
     else {
         free(recv_data);
     }
-    return len;
+    return is_correct ? len : 0;
 }
 
 
